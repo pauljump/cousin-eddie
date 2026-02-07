@@ -8,7 +8,7 @@
 
 ## 📊 Signal Summary
 
-**Total Signals:** 31
+**Total Signals:** 39
 **Signal Types:** 5
 **Categories:** 4
 **Processors Working:** 5/5 (100%)
@@ -30,11 +30,11 @@
 
 | Processor | Signals | Status |
 |-----------|---------|--------|
-| App Store Ratings | 9 | ✅ Working |
-| SEC Form 4 | 11 | ✅ Working (needs XML parsing) |
-| Google Trends | 6 | ✅ Working |
-| Job Postings | 3 | ⚠️ Limited (rate limits) |
-| Reddit Sentiment | 2 | ✅ Working |
+| App Store Ratings | 12 | ✅ Working |
+| SEC Form 4 | 11 | ✅ Working (XML parsing complete) |
+| Google Trends | 9 | ✅ Working |
+| Job Postings | 4 | ⚠️ Limited (rate limits) |
+| Reddit Sentiment | 3 | ✅ Working |
 
 ---
 
@@ -57,8 +57,9 @@
   - "rideshare": Stable
 
 ### Insider Trading
-- **SEC Form 4:** 11 filings detected (Jan 13-21) → **0 PENDING**
-  - Not yet scored (need XML parsing to determine buy/sell)
+- **SEC Form 4:** 11 filings detected (Jan 13-21) → **-16 MILDLY BEARISH**
+  - 1 discretionary sell: Chief Legal Officer sold $260k (Jan 21)
+  - 10 filings with only tax withholdings/option exercises (neutral)
 
 ### Hiring Velocity
 - **Job Postings:** 0 positions detected → **-20 BEARISH**
@@ -68,23 +69,23 @@
 
 ## 💡 Aggregate Signal Score
 
-### Weighted Average: **+52 (Moderately Bullish)**
+### Weighted Average: **+36 (Moderately Bullish)**
 
 **Breakdown:**
 - App ratings: +230 (80+80+70)
 - Social sentiment: +7
 - Search trends: 0
 - Job postings: -20
-- SEC Form 4: 0 (neutral, pending scoring)
+- SEC Form 4: -16 (executive sell)
 
-**Confidence:** Medium (0.68 average)
+**Confidence:** Medium (0.67 average)
 
 **Interpretation:**
 Strong consumer satisfaction signals from App Store (excellent ratings, high volume).
 Social sentiment is neutral-to-positive but not overwhelming.
 Search interest is stable (not declining, but not surging).
 Hiring data is incomplete due to scraper limitations.
-Insider trading data needs XML parsing for proper analysis.
+Insider trading shows minor selling by non-C-suite executives (CLO $260k sell, neutral signal).
 
 ---
 
@@ -96,7 +97,9 @@ Insider trading data needs XML parsing for proper analysis.
    - Source: SEC EDGAR API
    - Frequency: Real-time
    - Cost: Free
-   - Status: Working, needs XML parsing upgrade
+   - Status: Fully operational (XML parsing complete)
+   - Features: Extracts insider name, role, transaction type (buy/sell), shares, price
+   - Filters: Excludes tax withholdings and option exercises (not market activity)
 
 2. **Job Postings** (Workforce)
    - Source: Indeed + Company career pages
@@ -126,7 +129,7 @@ Insider trading data needs XML parsing for proper analysis.
 
 - **Engine:** PostgreSQL 16 + TimescaleDB
 - **Storage:** Time-series optimized
-- **Signals Stored:** 31
+- **Signals Stored:** 39
 - **Deduplication:** By timestamp + company + signal type
 - **Query Performance:** <100ms for all queries
 
@@ -144,11 +147,12 @@ Insider trading data needs XML parsing for proper analysis.
 
 ### High Priority
 
-1. **Parse SEC Form 4 XML**
-   - Extract buy/sell transactions
-   - Identify insider role (CEO, CFO, Director)
-   - Calculate transaction size
-   - Implement scoring function (large CEO buy = +90, etc.)
+1. **✅ COMPLETED: Parse SEC Form 4 XML**
+   - ✅ Extract buy/sell transactions
+   - ✅ Identify insider role (CEO, CFO, Director)
+   - ✅ Calculate transaction size
+   - ✅ Implement scoring function with role multipliers and size adjustments
+   - ✅ Filter out tax withholdings and option exercises
 
 2. **Fix Job Posting Scrapers**
    - Implement rotating proxies or API access
@@ -201,9 +205,9 @@ Insider trading data needs XML parsing for proper analysis.
 | Total ingestion time (30 days) | ~15 seconds |
 | Average signals per run | 8 |
 | Query response time | <100ms |
-| Database size | <1MB (31 signals) |
-| API calls per ingestion | ~15 |
-| Success rate | 80% (4/5 fully working) |
+| Database size | <1MB (39 signals) |
+| API calls per ingestion | ~26 (includes XML fetches) |
+| Success rate | 80% (4/5 fully working, 1 rate-limited) |
 
 ---
 
