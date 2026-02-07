@@ -1,5 +1,5 @@
 {
-  "score": 43,
+  "score": 57,
   "status": "designing",
   "checklist": [
     {
@@ -27,8 +27,8 @@
       "id": "tech_approach",
       "label": "Technical approach decided",
       "description": "How will we build this?",
-      "checked": false,
-      "notes": ""
+      "checked": true,
+      "notes": "Plugin-based signal processor architecture. Python + FastAPI + TimescaleDB. First processor (SEC Form 4) implemented as reference."
     },
     {
       "id": "assumptions",
