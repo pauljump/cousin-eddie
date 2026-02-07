@@ -42,6 +42,13 @@ from ..signal_types.alternative.stackoverflow_activity import StackOverflowActiv
 from ..signal_types.alternative.niche_community_sentiment import NicheCommunitySentimentProcessor
 from ..signal_types.alternative.domain_registrations import DomainRegistrationProcessor
 from ..signal_types.alternative.website_changes import WebsiteChangeProcessor
+from ..signal_types.alternative.clinical_trials import ClinicalTrialsProcessor
+from ..signal_types.alternative.marketplace_activity import MarketplaceActivityProcessor
+from ..signal_types.alternative.academic_research import AcademicResearchProcessor
+from ..signal_types.alternative.government_permits import GovernmentPermitsProcessor
+from ..signal_types.alternative.import_export_data import ImportExportProcessor
+from ..signal_types.alternative.foot_traffic import FootTrafficProcessor
+from ..signal_types.alternative.satellite_imagery import SatelliteImageryProcessor
 
 
 def register_all_processors():
@@ -83,6 +90,13 @@ def register_all_processors():
         NicheCommunitySentimentProcessor(),
         DomainRegistrationProcessor(),
         WebsiteChangeProcessor(),
+        ClinicalTrialsProcessor(),
+        MarketplaceActivityProcessor(),
+        AcademicResearchProcessor(),
+        GovernmentPermitsProcessor(),
+        ImportExportProcessor(),
+        FootTrafficProcessor(),
+        SatelliteImageryProcessor(),
     ]
 
     for processor in processors:
