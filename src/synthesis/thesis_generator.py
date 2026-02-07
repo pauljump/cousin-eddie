@@ -1,7 +1,7 @@
 """
 Investment Thesis Generator
 
-Uses LLM (Claude) to synthesize all signals into actionable investment thesis.
+Uses LLM (OpenAI GPT-4) to synthesize all signals into actionable investment thesis.
 This is the CORE VALUE PROP - turning 100+ signals into coherent narrative.
 """
 
@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from collections import defaultdict
 import json
 
-from anthropic import Anthropic
+from openai import OpenAI
 from loguru import logger
 
 from ..models.base import SessionLocal
@@ -62,15 +62,15 @@ Generated: {self.generated_at.strftime('%Y-%m-%d %H:%M UTC')}
 class ThesisGenerator:
     """Generate investment thesis from all available signals"""
 
-    def __init__(self, anthropic_api_key: Optional[str] = None):
+    def __init__(self, openai_api_key: Optional[str] = None):
         """
         Initialize thesis generator.
 
         Args:
-            anthropic_api_key: Anthropic API key. If None, will use environment variable.
+            openai_api_key: OpenAI API key. If None, will use environment variable.
         """
-        self.client = Anthropic(api_key=anthropic_api_key)
-        self.model = "claude-sonnet-4-20250514"  # Latest Sonnet model
+        self.client = OpenAI(api_key=openai_api_key)
+        self.model = "gpt-4-turbo-preview"  # GPT-4 Turbo model
 
     async def generate_thesis(
         self,
@@ -102,9 +102,9 @@ class ThesisGenerator:
         # Build prompt for LLM
         prompt = self._build_prompt(company, signal_summary, signals)
 
-        # Call Claude API
-        logger.info(f"Calling Claude API to synthesize {len(signals)} signals...")
-        response = self.client.messages.create(
+        # Call OpenAI API
+        logger.info(f"Calling OpenAI API to synthesize {len(signals)} signals...")
+        response = self.client.chat.completions.create(
             model=self.model,
             max_tokens=4000,
             temperature=0.3,  # Lower temperature for more analytical output
@@ -116,7 +116,7 @@ class ThesisGenerator:
             ]
         )
 
-        thesis_text = response.content[0].text
+        thesis_text = response.choices[0].message.content
 
         # Parse structured output from thesis
         parsed = self._parse_thesis(thesis_text)

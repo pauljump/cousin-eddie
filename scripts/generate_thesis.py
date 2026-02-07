@@ -48,15 +48,15 @@ async def main():
     logger.info(f"Generating investment thesis for {company.name} ({company.ticker})")
     logger.info("=" * 80)
 
-    # Check for Anthropic API key
-    api_key = os.getenv("ANTHROPIC_API_KEY")
+    # Check for OpenAI API key
+    api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
-        logger.error("ANTHROPIC_API_KEY environment variable not set")
-        logger.info("Set it with: export ANTHROPIC_API_KEY=your_key_here")
+        logger.error("OPENAI_API_KEY environment variable not set")
+        logger.info("Set it with: export OPENAI_API_KEY=your_key_here")
         sys.exit(1)
 
     # Generate thesis
-    generator = ThesisGenerator(anthropic_api_key=api_key)
+    generator = ThesisGenerator(openai_api_key=api_key)
 
     try:
         thesis = await generator.generate_thesis(company, lookback_days=90)
