@@ -1,14 +1,17 @@
 {
   "ideaId": "IDEA-164",
-  "title": "concepts",
-  "status": "Cousin Eddie",
-  "readiness": 0,
+  "title": "cousin-eddie - Alternative Data Intelligence Platform",
+  "status": "Designing",
+  "readiness": 43,
   "github": "https://github.com/pauljump/cousin-eddie",
   "directory": "cousin-eddie",
-  "relatedIdeas": related:,
-  "lastSession": "2026-02-07T17:44:45Z",
-  "technology": [],
-  "domain": [],
-  "nextMilestone": "Start conversation to define project",
-  "template_version": 1
+  "relatedIdeas": [],
+  "lastSession": "2026-02-07",
+  "technology": ["Python", "FastAPI", "PostgreSQL", "TimescaleDB", "LLMs", "Claude", "OpenAI"],
+  "domain": ["Quantitative Trading", "Alternative Data", "Signal Processing", "Financial Markets"],
+  "nextMilestone": "Build MVP with 5 signal types for Uber POC",
+  "template_version": 1,
+  "valueProposition": "Democratize alternative data trading by building a platform that can ingest 100+ signal types for any public company, giving solo traders the same data edge as hedge funds",
+  "targetUser": "Solo quantitative traders and small trading shops",
+  "mvpScope": "Signal processing platform with Uber as POC - SEC filings, hiring data, app metrics, web signals, sentiment analysis"
 }

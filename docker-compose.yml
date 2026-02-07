@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: timescale/timescaledb:latest-pg16
+    container_name: cousin-eddie-postgres
+    environment:
+      POSTGRES_DB: cousin_eddie
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init_db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: cousin-eddie-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # API service (commented out for now - run locally during development)
+  # api:
+  #   build: .
+  #   container_name: cousin-eddie-api
+  #   depends_on:
+  #     - postgres
+  #     - redis
+  #   environment:
+  #     DATABASE_URL: postgresql://postgres:postgres@postgres:5432/cousin_eddie
+  #     REDIS_URL: redis://redis:6379/0
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - .:/app
+  #   command: uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Celery worker (commented out for now)
+  # worker:
+  #   build: .
+  #   container_name: cousin-eddie-worker
+  #   depends_on:
+  #     - postgres
+  #     - redis
+  #   environment:
+  #     DATABASE_URL: postgresql://postgres:postgres@postgres:5432/cousin_eddie
+  #     REDIS_URL: redis://redis:6379/0
+  #   volumes:
+  #     - .:/app
+  #   command: celery -A src.core.tasks worker --loglevel=info
+
+volumes:
+  postgres_data:
+  redis_data:

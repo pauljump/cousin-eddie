@@ -1,27 +1,27 @@
 {
-  "score": 0,
-  "status": "exploring",
+  "score": 43,
+  "status": "designing",
   "checklist": [
     {
       "id": "core_value",
       "label": "Core value defined",
       "description": "What problem does this solve? For whom?",
-      "checked": false,
-      "notes": ""
+      "checked": true,
+      "notes": "Democratize alternative data trading - give solo traders hedge fund-level signal processing"
     },
     {
       "id": "target_user",
       "label": "Target user identified",
       "description": "Who specifically will use this?",
-      "checked": false,
-      "notes": ""
+      "checked": true,
+      "notes": "Solo quantitative traders and small trading shops"
     },
     {
       "id": "mvp_scope",
       "label": "MVP scope defined",
       "description": "What's the smallest useful version?",
-      "checked": false,
-      "notes": ""
+      "checked": true,
+      "notes": "Signal platform with Uber POC - 5 signal types initially (SEC, hiring, app, web, sentiment)"
     },
     {
       "id": "tech_approach",
@@ -53,5 +53,7 @@
     }
   ],
   "blockers": [],
-  "nextActions": ["Start conversation with Claude to define project"]
+  "nextActions": [
+    "Start conversation with Claude to define project"
+  ]
 }
