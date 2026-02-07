@@ -85,8 +85,8 @@ class GoogleTrendsProcessor(SignalProcessor):
                 keywords,
                 None,  # cat (category)
                 timeframe,
-                'US',  # geo
-                None   # gprop
+                'US'   # geo
+                # gprop parameter removed - defaults to '' (web search)
             )
 
             # Get interest over time

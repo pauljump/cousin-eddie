@@ -13,6 +13,7 @@ from ..signal_types.regulatory.sec_form4 import SECForm4Processor
 from ..signal_types.workforce.job_postings import JobPostingsProcessor
 from ..signal_types.web_digital.app_store_ratings import AppStoreRatingsProcessor
 from ..signal_types.web_digital.google_trends import GoogleTrendsProcessor
+from ..signal_types.alternative.reddit_sentiment import RedditSentimentProcessor
 
 
 def register_all_processors():
@@ -25,6 +26,7 @@ def register_all_processors():
         JobPostingsProcessor(),
         AppStoreRatingsProcessor(),
         GoogleTrendsProcessor(),
+        RedditSentimentProcessor(),
     ]
 
     for processor in processors:
