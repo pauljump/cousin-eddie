@@ -36,9 +36,18 @@ class JobPostingsProcessor(SignalProcessor):
     """Process job posting data from career pages"""
 
     def __init__(self):
+        # Greenhouse board tokens for companies using Greenhouse ATS
+        self.greenhouse_boards = {
+            "LYFT": "lyft",
+            # Add more as we discover them
+        }
+
+        # Fallback career page URLs for custom ATS
         self.career_urls = {
             "UBER": "https://www.uber.com/us/en/careers/",
         }
+
+        self.greenhouse_api = "https://boards-api.greenhouse.io/v1/boards"
         self.indeed_base = "https://www.indeed.com"
 
     @property
@@ -78,7 +87,62 @@ class JobPostingsProcessor(SignalProcessor):
                 "sources": {}
             }
 
-            # Try company career page
+            # Try Greenhouse API first (most reliable)
+            if company.id in self.greenhouse_boards:
+                try:
+                    board_token = self.greenhouse_boards[company.id]
+                    greenhouse_url = f"{self.greenhouse_api}/{board_token}/jobs"
+                    logger.info(f"Fetching {company.ticker} jobs from Greenhouse: {greenhouse_url}")
+
+                    response = await client.get(
+                        greenhouse_url,
+                        headers={"User-Agent": "Alternative Data Platform research@example.com"}
+                    )
+
+                    if response.status_code == 200:
+                        data = response.json()
+                        jobs = data.get("jobs", [])
+
+                        # Group by category/location for richer data
+                        categories = {}
+                        locations = {}
+
+                        for job in jobs:
+                            # Get category from metadata
+                            category = "Other"
+                            metadata = job.get("metadata", [])
+                            for meta in metadata:
+                                if meta.get("name") == "Career Site Category":
+                                    category = meta.get("value", "Other")
+                                    break
+
+                            loc = job.get("location", {}).get("name", "Unknown")
+
+                            categories[category] = categories.get(category, 0) + 1
+                            locations[loc] = locations.get(loc, 0) + 1
+
+                        results["sources"]["greenhouse"] = {
+                            "url": greenhouse_url,
+                            "total_jobs": len(jobs),
+                            "categories": categories,
+                            "locations": locations,
+                            "status": "success"
+                        }
+                        logger.info(f"Greenhouse API: {len(jobs)} open positions")
+                    else:
+                        results["sources"]["greenhouse"] = {
+                            "url": greenhouse_url,
+                            "status": "failed",
+                            "error": f"HTTP {response.status_code}"
+                        }
+                except Exception as e:
+                    logger.warning(f"Error fetching Greenhouse data: {e}")
+                    results["sources"]["greenhouse"] = {
+                        "status": "error",
+                        "error": str(e)
+                    }
+
+            # Try company career page (fallback for non-Greenhouse companies)
             if company.id in self.career_urls:
                 try:
                     career_url = self.career_urls[company.id]
@@ -190,16 +254,28 @@ class JobPostingsProcessor(SignalProcessor):
         # Aggregate job counts from all sources
         total_jobs = 0
         any_source_succeeded = False
+        primary_source = None
 
-        career_page = sources.get("career_page", {})
-        if career_page.get("status") == "success":
-            total_jobs += career_page.get("estimated_jobs", 0)
+        # Greenhouse is most reliable
+        greenhouse = sources.get("greenhouse", {})
+        if greenhouse.get("status") == "success":
+            total_jobs = greenhouse.get("total_jobs", 0)
             any_source_succeeded = True
+            primary_source = "greenhouse"
+        else:
+            # Fall back to other sources
+            career_page = sources.get("career_page", {})
+            if career_page.get("status") == "success":
+                total_jobs += career_page.get("estimated_jobs", 0)
+                any_source_succeeded = True
+                primary_source = "career_page"
 
-        indeed = sources.get("indeed", {})
-        if indeed.get("status") == "success":
-            total_jobs += indeed.get("job_count", 0)
-            any_source_succeeded = True
+            indeed = sources.get("indeed", {})
+            if indeed.get("status") == "success":
+                total_jobs += indeed.get("job_count", 0)
+                any_source_succeeded = True
+                if not primary_source:
+                    primary_source = "indeed"
 
         # If ALL sources failed, don't create a misleading signal
         if not any_source_succeeded:
@@ -209,30 +285,50 @@ class JobPostingsProcessor(SignalProcessor):
         # Score based on absolute count (will improve with historical data)
         # TODO: Track historical average and score based on % change
         score = 0
-        confidence = 0.6  # Medium confidence without historical context
+
+        # Greenhouse data is more reliable than scraped data
+        base_confidence = 0.85 if primary_source == "greenhouse" else 0.6
 
         if total_jobs > 1000:
             score = 75
-            confidence = 0.7
-            description = f"High hiring activity: {total_jobs} open positions (expansion signal)"
+            confidence = base_confidence
+            description = f"High hiring activity: {total_jobs:,} open positions (expansion signal)"
         elif total_jobs > 500:
             score = 50
-            confidence = 0.65
-            description = f"Moderate hiring: {total_jobs} open positions (growth signal)"
+            confidence = base_confidence - 0.05
+            description = f"Moderate hiring: {total_jobs:,} open positions (growth signal)"
         elif total_jobs > 100:
             score = 25
-            confidence = 0.6
-            description = f"Steady hiring: {total_jobs} open positions"
+            confidence = base_confidence - 0.10
+            description = f"Steady hiring: {total_jobs:,} open positions"
         elif total_jobs > 50:
             score = 0
-            confidence = 0.5
-            description = f"Low hiring: {total_jobs} open positions (neutral)"
+            confidence = base_confidence - 0.15
+            description = f"Low hiring: {total_jobs:,} open positions (neutral)"
         else:
             score = -20
-            confidence = 0.5
-            description = f"Minimal hiring: {total_jobs} open positions (potential contraction)"
+            confidence = base_confidence - 0.20
+            description = f"Minimal hiring: {total_jobs:,} open positions (potential contraction)"
+
+        # Add category breakdown to description if available
+        if greenhouse.get("status") == "success":
+            categories = greenhouse.get("categories", {})
+            if categories:
+                top_cat = max(categories.items(), key=lambda x: x[1])
+                description += f" | Top category: {top_cat[0]} ({top_cat[1]} positions)"
 
         normalized_value = score / 100.0
+
+        # Determine source name and URL
+        if primary_source == "greenhouse":
+            source_name = "Greenhouse API"
+            source_url = greenhouse.get("url", "")
+        elif primary_source == "career_page":
+            source_name = "Career Page"
+            source_url = sources.get("career_page", {}).get("url", "")
+        else:
+            source_name = "Indeed"
+            source_url = sources.get("indeed", {}).get("url", "")
 
         # Create signal
         signal = Signal(
@@ -245,9 +341,9 @@ class JobPostingsProcessor(SignalProcessor):
             score=score,
             confidence=confidence,
             metadata=SignalMetadata(
-                source_url=sources.get("indeed", {}).get("url", ""),
-                source_name="Career pages + Indeed",
-                processing_notes=f"Aggregated {len(sources)} sources",
+                source_url=source_url,
+                source_name=source_name,
+                processing_notes=f"Primary source: {primary_source} | {len(sources)} sources checked",
                 raw_data_hash=hashlib.md5(
                     json.dumps(raw_data, sort_keys=True, default=str).encode()
                 ).hexdigest(),
