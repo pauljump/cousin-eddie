@@ -44,7 +44,7 @@ from sqlalchemy.orm import Session
 from src.core.company import Company
 from src.core.registry import get_processor_registry
 from src.models.signal import SignalModel
-from src.models.company import Company as CompanyModel
+from src.models.company import CompanyModel
 from src.database import init_db
 
 
