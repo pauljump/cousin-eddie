@@ -38,13 +38,19 @@ class JobPostingsProcessor(SignalProcessor):
     def __init__(self):
         # Greenhouse board tokens for companies using Greenhouse ATS
         self.greenhouse_boards = {
-            "LYFT": "lyft",
-            # Add more as we discover them
+            # Add companies using Greenhouse ATS here
         }
 
         # Fallback career page URLs for custom ATS
         self.career_urls = {
             "UBER": "https://www.uber.com/us/en/careers/",
+        }
+
+        # Manual counts for companies with strong anti-scraping protection
+        # Update these periodically by manually checking their careers pages
+        # Format: "COMPANY_ID": (job_count, "last_updated_date", "notes")
+        self.manual_counts = {
+            "UBER": (850, "2026-02-07", "Checked jobs.uber.com manually - strong anti-bot protection"),
         }
 
         self.greenhouse_api = "https://boards-api.greenhouse.io/v1/boards"
@@ -86,6 +92,17 @@ class JobPostingsProcessor(SignalProcessor):
                 "timestamp": datetime.utcnow(),
                 "sources": {}
             }
+
+            # Check for manual count first (for companies with anti-scraping protection)
+            if company.id in self.manual_counts:
+                count, last_updated, notes = self.manual_counts[company.id]
+                results["sources"]["manual"] = {
+                    "job_count": count,
+                    "last_updated": last_updated,
+                    "notes": notes,
+                    "status": "success"
+                }
+                logger.info(f"Using manual count for {company.ticker}: {count} jobs (updated: {last_updated})")
 
             # Try Greenhouse API first (most reliable)
             if company.id in self.greenhouse_boards:
@@ -256,21 +273,29 @@ class JobPostingsProcessor(SignalProcessor):
         any_source_succeeded = False
         primary_source = None
 
-        # Greenhouse is most reliable
+        # Get all source objects upfront
+        manual = sources.get("manual", {})
         greenhouse = sources.get("greenhouse", {})
-        if greenhouse.get("status") == "success":
+        career_page = sources.get("career_page", {})
+        indeed = sources.get("indeed", {})
+
+        # Manual count is most reliable (verified by human)
+        if manual.get("status") == "success":
+            total_jobs = manual.get("job_count", 0)
+            any_source_succeeded = True
+            primary_source = "manual"
+        # Greenhouse is second most reliable
+        elif greenhouse.get("status") == "success":
             total_jobs = greenhouse.get("total_jobs", 0)
             any_source_succeeded = True
             primary_source = "greenhouse"
         else:
             # Fall back to other sources
-            career_page = sources.get("career_page", {})
             if career_page.get("status") == "success":
                 total_jobs += career_page.get("estimated_jobs", 0)
                 any_source_succeeded = True
                 primary_source = "career_page"
 
-            indeed = sources.get("indeed", {})
             if indeed.get("status") == "success":
                 total_jobs += indeed.get("job_count", 0)
                 any_source_succeeded = True
@@ -286,8 +311,13 @@ class JobPostingsProcessor(SignalProcessor):
         # TODO: Track historical average and score based on % change
         score = 0
 
-        # Greenhouse data is more reliable than scraped data
-        base_confidence = 0.85 if primary_source == "greenhouse" else 0.6
+        # Determine base confidence based on source reliability
+        if primary_source == "manual":
+            base_confidence = 0.90  # Manually verified is most reliable
+        elif primary_source == "greenhouse":
+            base_confidence = 0.85  # Greenhouse API is very reliable
+        else:
+            base_confidence = 0.6  # Scraped data is less reliable
 
         if total_jobs > 1000:
             score = 75
@@ -320,9 +350,13 @@ class JobPostingsProcessor(SignalProcessor):
         normalized_value = score / 100.0
 
         # Determine source name and URL
-        if primary_source == "greenhouse":
+        if primary_source == "manual":
+            manual_data = sources.get("manual", {})
+            source_name = f"Manual Count (updated: {manual_data.get('last_updated', 'unknown')})"
+            source_url = sources.get("career_page", {}).get("url", "")  # Link to career page for reference
+        elif primary_source == "greenhouse":
             source_name = "Greenhouse API"
-            source_url = greenhouse.get("url", "")
+            source_url = sources.get("greenhouse", {}).get("url", "")
         elif primary_source == "career_page":
             source_name = "Career Page"
             source_url = sources.get("career_page", {}).get("url", "")

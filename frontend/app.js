@@ -28,7 +28,7 @@ async function loadStats() {
         // Show sample data if API not available
         document.getElementById('total-signals').textContent = '140';
         document.getElementById('active-processors').textContent = '7';
-        document.getElementById('total-companies').textContent = '2';
+        document.getElementById('total-companies').textContent = '1';
         document.getElementById('planned-processors').textContent = '25+';
         document.getElementById('last-updated').textContent = 'Demo Mode';
     }
@@ -61,15 +61,7 @@ async function loadCompanies() {
                 <div class="company-name">Uber Technologies Inc</div>
                 <div class="company-stats">
                     <span>Technology</span>
-                    <span>39 signals</span>
-                </div>
-            </div>
-            <div class="company-card" onclick="selectCompany('LYFT')">
-                <div class="company-ticker">LYFT</div>
-                <div class="company-name">Lyft Inc</div>
-                <div class="company-stats">
-                    <span>Technology</span>
-                    <span>6 signals</span>
+                    <span>140+ signals</span>
                 </div>
             </div>
         `;
