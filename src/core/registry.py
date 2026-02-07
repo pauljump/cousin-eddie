@@ -22,6 +22,7 @@ from ..signal_types.web_digital.app_store_ratings import AppStoreRatingsProcesso
 from ..signal_types.web_digital.google_trends import GoogleTrendsProcessor
 from ..signal_types.web_digital.play_store_ratings import PlayStoreRatingsProcessor
 from ..signal_types.web_digital.website_traffic import WebsiteTrafficProcessor
+from ..signal_types.web_digital.app_download_rankings import AppDownloadRankingsProcessor
 from ..signal_types.alternative.reddit_sentiment import RedditSentimentProcessor
 from ..signal_types.alternative.news_sentiment import NewsSentimentProcessor
 from ..signal_types.alternative.earnings_call_transcripts import EarningsCallTranscriptProcessor
@@ -29,6 +30,12 @@ from ..signal_types.alternative.patent_filings import PatentFilingsProcessor
 from ..signal_types.alternative.twitter_sentiment import TwitterSentimentProcessor
 from ..signal_types.alternative.github_activity import GitHubActivityProcessor
 from ..signal_types.alternative.customer_reviews import CustomerReviewsProcessor
+from ..signal_types.alternative.social_media_followers import SocialMediaFollowersProcessor
+from ..signal_types.alternative.wikipedia_pageviews import WikipediaPageviewsProcessor
+from ..signal_types.alternative.youtube_metrics import YouTubeMetricsProcessor
+from ..signal_types.alternative.pricing_intelligence import PricingIntelligenceProcessor
+from ..signal_types.alternative.credit_card_transactions import CreditCardTransactionsProcessor
+from ..signal_types.alternative.stackoverflow_activity import StackOverflowActivityProcessor
 
 
 def register_all_processors():
@@ -50,12 +57,19 @@ def register_all_processors():
         PlayStoreRatingsProcessor(),
         GoogleTrendsProcessor(),
         WebsiteTrafficProcessor(),
+        AppDownloadRankingsProcessor(),
         NewsSentimentProcessor(),
         EarningsCallTranscriptProcessor(),
         PatentFilingsProcessor(),
         TwitterSentimentProcessor(),
         GitHubActivityProcessor(),
         CustomerReviewsProcessor(),
+        SocialMediaFollowersProcessor(),
+        WikipediaPageviewsProcessor(),
+        YouTubeMetricsProcessor(),
+        PricingIntelligenceProcessor(),
+        CreditCardTransactionsProcessor(),
+        StackOverflowActivityProcessor(),
         RedditSentimentProcessor(),
     ]
 
