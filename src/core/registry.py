@@ -39,6 +39,9 @@ from ..signal_types.alternative.youtube_metrics import YouTubeMetricsProcessor
 from ..signal_types.alternative.pricing_intelligence import PricingIntelligenceProcessor
 from ..signal_types.alternative.credit_card_transactions import CreditCardTransactionsProcessor
 from ..signal_types.alternative.stackoverflow_activity import StackOverflowActivityProcessor
+from ..signal_types.alternative.niche_community_sentiment import NicheCommunitySentimentProcessor
+from ..signal_types.alternative.domain_registrations import DomainRegistrationProcessor
+from ..signal_types.alternative.website_changes import WebsiteChangeProcessor
 
 
 def register_all_processors():
@@ -77,6 +80,9 @@ def register_all_processors():
         CreditCardTransactionsProcessor(),
         StackOverflowActivityProcessor(),
         RedditSentimentProcessor(),
+        NicheCommunitySentimentProcessor(),
+        DomainRegistrationProcessor(),
+        WebsiteChangeProcessor(),
     ]
 
     for processor in processors:
