@@ -28,6 +28,7 @@ from ..signal_types.web_digital.app_download_rankings import AppDownloadRankings
 from ..signal_types.alternative.reddit_sentiment import RedditSentimentProcessor
 from ..signal_types.alternative.news_sentiment import NewsSentimentProcessor
 from ..signal_types.alternative.earnings_call_transcripts import EarningsCallTranscriptProcessor
+from ..signal_types.alternative.earnings_call_qa_tone import EarningsCallQAToneProcessor
 from ..signal_types.alternative.patent_filings import PatentFilingsProcessor
 from ..signal_types.alternative.twitter_sentiment import TwitterSentimentProcessor
 from ..signal_types.alternative.github_activity import GitHubActivityProcessor
@@ -64,6 +65,7 @@ def register_all_processors():
         AppDownloadRankingsProcessor(),
         NewsSentimentProcessor(),
         EarningsCallTranscriptProcessor(),
+        EarningsCallQAToneProcessor(),
         PatentFilingsProcessor(),
         TwitterSentimentProcessor(),
         GitHubActivityProcessor(),
