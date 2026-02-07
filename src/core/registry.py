@@ -11,6 +11,7 @@ from .signal_processor import get_processor_registry
 # Import all signal processors
 from ..signal_types.regulatory.sec_form4 import SECForm4Processor
 from ..signal_types.regulatory.sec_financials import SECFinancialsProcessor
+from ..signal_types.regulatory.sec_mda import SECMDAProcessor
 from ..signal_types.workforce.job_postings import JobPostingsProcessor
 from ..signal_types.web_digital.app_store_ratings import AppStoreRatingsProcessor
 from ..signal_types.web_digital.google_trends import GoogleTrendsProcessor
@@ -25,6 +26,7 @@ def register_all_processors():
     processors = [
         SECForm4Processor(),
         SECFinancialsProcessor(),
+        SECMDAProcessor(),
         JobPostingsProcessor(),
         AppStoreRatingsProcessor(),
         GoogleTrendsProcessor(),
