@@ -17,6 +17,7 @@ from ..signal_types.regulatory.sec_risk_factors import SECRiskFactorsProcessor
 from ..signal_types.regulatory.sec_13f import SEC13FProcessor
 from ..signal_types.regulatory.sec_comment_letters import SECCommentLettersProcessor
 from ..signal_types.regulatory.sec_footnote_analysis import SECFootnoteAnalysisProcessor
+from ..signal_types.regulatory.sc_13d_tracker import SC13DTrackerProcessor
 from ..signal_types.workforce.job_postings import JobPostingsProcessor
 from ..signal_types.workforce.glassdoor_reviews import GlassdoorReviewsProcessor
 from ..signal_types.workforce.linkedin_employee_growth import LinkedInEmployeeGrowthProcessor
@@ -65,6 +66,7 @@ def register_all_processors():
         SEC13FProcessor(),
         SECCommentLettersProcessor(),
         SECFootnoteAnalysisProcessor(),
+        SC13DTrackerProcessor(),
         JobPostingsProcessor(),
         GlassdoorReviewsProcessor(),
         LinkedInEmployeeGrowthProcessor(),
