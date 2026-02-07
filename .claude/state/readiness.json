@@ -1,0 +1,57 @@
+{
+  "score": 0,
+  "status": "exploring",
+  "checklist": [
+    {
+      "id": "core_value",
+      "label": "Core value defined",
+      "description": "What problem does this solve? For whom?",
+      "checked": false,
+      "notes": ""
+    },
+    {
+      "id": "target_user",
+      "label": "Target user identified",
+      "description": "Who specifically will use this?",
+      "checked": false,
+      "notes": ""
+    },
+    {
+      "id": "mvp_scope",
+      "label": "MVP scope defined",
+      "description": "What's the smallest useful version?",
+      "checked": false,
+      "notes": ""
+    },
+    {
+      "id": "tech_approach",
+      "label": "Technical approach decided",
+      "description": "How will we build this?",
+      "checked": false,
+      "notes": ""
+    },
+    {
+      "id": "assumptions",
+      "label": "Critical assumptions listed",
+      "description": "What could invalidate this idea?",
+      "checked": false,
+      "notes": ""
+    },
+    {
+      "id": "blockers",
+      "label": "Blockers identified",
+      "description": "What's preventing progress?",
+      "checked": false,
+      "notes": ""
+    },
+    {
+      "id": "first_experiment",
+      "label": "First experiment run",
+      "description": "Have we tested anything yet?",
+      "checked": false,
+      "notes": ""
+    }
+  ],
+  "blockers": [],
+  "nextActions": ["Start conversation with Claude to define project"]
+}

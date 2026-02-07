@@ -1,0 +1,12 @@
+# .clauignore
+
+# Don't log these files/directories
+node_modules/
+.next/
+dist/
+build/
+.env
+.env.local
+*.log
+.git/
+
