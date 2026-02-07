@@ -189,14 +189,22 @@ class JobPostingsProcessor(SignalProcessor):
 
         # Aggregate job counts from all sources
         total_jobs = 0
+        any_source_succeeded = False
 
         career_page = sources.get("career_page", {})
         if career_page.get("status") == "success":
             total_jobs += career_page.get("estimated_jobs", 0)
+            any_source_succeeded = True
 
         indeed = sources.get("indeed", {})
         if indeed.get("status") == "success":
             total_jobs += indeed.get("job_count", 0)
+            any_source_succeeded = True
+
+        # If ALL sources failed, don't create a misleading signal
+        if not any_source_succeeded:
+            logger.warning(f"All job posting sources failed for {company.ticker} - skipping signal")
+            return []
 
         # Score based on absolute count (will improve with historical data)
         # TODO: Track historical average and score based on % change
