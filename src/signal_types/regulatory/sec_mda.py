@@ -101,24 +101,36 @@ class SECMDAProcessor(SignalProcessor):
         company: Company,
         start: datetime,
         end: datetime,
-    ) -> List[Signal]:
-        """Fetch MD&A signals (delegates to process method)"""
-        return await self.process(company)
-
-    async def process(self, company: Company) -> List[Signal]:
-        """Process MD&A from recent 10-K/10-Q filings"""
-        logger.info(f"Processing MD&A for {company.ticker}")
+    ) -> Dict[str, Any]:
+        """Fetch MD&A data from recent 10-K/10-Q filings"""
+        logger.info(f"Fetching MD&A for {company.ticker}")
 
         if not company.cik:
             logger.warning(f"No CIK for {company.ticker}, skipping MD&A")
-            return []
+            return {}
 
         # Get recent filings
         filings = self._get_recent_filings(company.cik, form_types=["10-K", "10-Q"])
 
+        return {
+            "company_id": company.id,
+            "ticker": company.ticker,
+            "cik": company.cik,
+            "filings": filings[:4],  # Last 4 filings (1 year for quarterly)
+            "timestamp": datetime.utcnow(),
+        }
+
+    def process(self, company: Company, raw_data: Dict[str, Any]) -> List[Signal]:
+        """Process MD&A raw data into signals"""
+        logger.info(f"Processing MD&A for {company.ticker}")
+
+        filings = raw_data.get("filings", [])
+        if not filings:
+            return []
+
         signals = []
 
-        for filing in filings[:4]:  # Process last 4 filings (1 year for quarterly)
+        for filing in filings:
             try:
                 signal = self._process_filing(company, filing)
                 if signal:
