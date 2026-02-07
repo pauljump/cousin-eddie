@@ -38,6 +38,9 @@ class AppStoreRatingsProcessor(SignalProcessor):
             "UBER": {
                 "uber": "368677368",  # Uber ride-hailing
                 "uber_eats": "1058959277",  # Uber Eats
+            },
+            "LYFT": {
+                "lyft": "529379082",  # Lyft ride-hailing
             }
         }
 

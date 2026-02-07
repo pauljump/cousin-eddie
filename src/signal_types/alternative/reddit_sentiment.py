@@ -36,11 +36,13 @@ class RedditSentimentProcessor(SignalProcessor):
         # Subreddits to monitor per company
         self.subreddits = {
             "UBER": ["uber", "uberdrivers", "UberEATS", "stocks", "investing"],
+            "LYFT": ["lyft", "lyftdrivers", "stocks", "investing"],
         }
 
         # Keywords to search for
         self.keywords = {
             "UBER": ["uber", "uber stock", "uber eats", "dara khosrowshahi"],
+            "LYFT": ["lyft", "lyft stock", "david risher"],
         }
 
     @property

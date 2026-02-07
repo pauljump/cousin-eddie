@@ -37,6 +37,7 @@ class GoogleTrendsProcessor(SignalProcessor):
         # Keywords to track per company
         self.keywords = {
             "UBER": ["uber", "uber eats", "rideshare"],
+            "LYFT": ["lyft", "lyft ride", "rideshare"],
         }
 
     @property

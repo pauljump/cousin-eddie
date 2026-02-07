@@ -106,3 +106,23 @@ UBER = Company(
 )
 
 _registry.register(UBER)
+
+# Pre-register Lyft for competitive analysis
+LYFT = Company(
+    id="LYFT",
+    ticker="LYFT",
+    name="Lyft Inc",
+    cik="0001759509",
+    sector="Technology",
+    industry="Ride-hailing",
+    has_app=True,
+    has_physical_locations=False,
+    is_tech_company=True,
+    metadata={
+        "competitors": ["UBER"],
+        "primary_markets": ["US", "Canada"],
+        "key_metrics": ["rides", "drivers", "riders"],
+    }
+)
+
+_registry.register(LYFT)
