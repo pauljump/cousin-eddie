@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cousin Eddie - Alternative Data Intelligence Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="logo">
+                    <span class="logo-icon">📊</span>
+                    Cousin Eddie
+                </h1>
+                <p class="tagline">Alternative Data Intelligence Platform for Public Companies</p>
+            </div>
+            <div class="stats-bar" id="stats">
+                <div class="stat">
+                    <div class="stat-value" id="total-signals">—</div>
+                    <div class="stat-label">Total Signals</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="active-processors">—</div>
+                    <div class="stat-label">Active Processors</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="total-companies">—</div>
+                    <div class="stat-label">Companies</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" id="planned-processors">—</div>
+                    <div class="stat-label">Planned Signals</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Company Selector -->
+            <section class="section">
+                <h2 class="section-title">Select Company</h2>
+                <div class="company-grid" id="company-grid">
+                    <div class="loading">Loading companies...</div>
+                </div>
+            </section>
+
+            <!-- Signal Processors -->
+            <section class="section">
+                <h2 class="section-title">Signal Processors</h2>
+                <div class="processor-categories">
+                    <!-- Categories will be populated dynamically -->
+                    <div class="category">
+                        <h3 class="category-title">📋 Regulatory (EDGAR)</h3>
+                        <div id="regulatory-processors" class="processor-grid"></div>
+                    </div>
+                    <div class="category">
+                        <h3 class="category-title">📱 Web & Digital</h3>
+                        <div id="web_digital-processors" class="processor-grid"></div>
+                    </div>
+                    <div class="category">
+                        <h3 class="category-title">💼 Workforce</h3>
+                        <div id="workforce-processors" class="processor-grid"></div>
+                    </div>
+                    <div class="category">
+                        <h3 class="category-title">🌐 Alternative Signals</h3>
+                        <div id="alternative-processors" class="processor-grid"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Signals -->
+            <section class="section" id="signals-section" style="display: none;">
+                <h2 class="section-title">Recent Signals for <span id="selected-company"></span></h2>
+                <div class="signals-container" id="signals-container">
+                    <div class="loading">Loading signals...</div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Built with FastAPI + PostgreSQL + TimescaleDB | Last updated: <span id="last-updated">—</span></p>
+            <p class="footer-note">🚀 Real-time alternative data synthesis for quantitative trading</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
