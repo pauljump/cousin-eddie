@@ -8,6 +8,7 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime, timedelta
 import asyncio
 import uuid
+import json
 
 from loguru import logger
 from sqlalchemy.orm import Session
@@ -17,6 +18,18 @@ from .signal import Signal
 from .signal_processor import SignalProcessor, get_processor_registry
 from ..models.base import SessionLocal
 from ..models.signal import SignalModel
+
+
+def serialize_for_json(obj: Any) -> Any:
+    """Recursively serialize objects for JSON storage"""
+    if isinstance(obj, datetime):
+        return obj.isoformat()
+    elif isinstance(obj, dict):
+        return {k: serialize_for_json(v) for k, v in obj.items()}
+    elif isinstance(obj, (list, tuple)):
+        return [serialize_for_json(item) for item in obj]
+    else:
+        return obj
 
 
 class SignalOrchestrator:
@@ -131,29 +144,30 @@ class SignalOrchestrator:
             stored_count = 0
 
             for signal in signals:
-                # Check if signal already exists (by hash)
+                # Check if signal already exists (by timestamp + type + company)
+                # Note: For proper deduplication, upgrade to JSONB and use hash
                 existing = db.query(SignalModel).filter(
                     SignalModel.company_id == signal.company_id,
                     SignalModel.signal_type == signal.signal_type,
-                    SignalModel.metadata['raw_data_hash'].astext == signal.metadata.raw_data_hash
+                    SignalModel.timestamp == signal.timestamp
                 ).first()
 
                 if existing:
                     logger.debug(f"Signal already exists: {signal.signal_type} at {signal.timestamp}")
                     continue
 
-                # Create model
+                # Create model (serialize datetime objects)
                 signal_model = SignalModel(
                     id=str(uuid.uuid4()),
                     company_id=signal.company_id,
                     signal_type=signal.signal_type,
-                    category=signal.category,
+                    category=signal.category.value,  # Convert enum to string
                     timestamp=signal.timestamp,
-                    raw_value=signal.raw_value,
+                    raw_value=serialize_for_json(signal.raw_value),
                     normalized_value=signal.normalized_value,
                     score=signal.score,
                     confidence=signal.confidence,
-                    metadata=signal.metadata.model_dump(),
+                    signal_metadata=serialize_for_json(signal.metadata.model_dump()),
                     description=signal.description,
                     tags=signal.tags,
                 )

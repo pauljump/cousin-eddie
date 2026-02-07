@@ -7,7 +7,8 @@ from typing import Generator
 import os
 
 # Get database URL from environment
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/cousin_eddie")
+# Use 127.0.0.1 instead of localhost to avoid IPv6 issues
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@127.0.0.1:5432/cousin_eddie")
 
 # Create engine
 engine = create_engine(

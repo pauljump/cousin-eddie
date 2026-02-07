@@ -26,7 +26,7 @@ class CompanyModel(Base):
     is_public_company = Column(Boolean, default=True)
 
     # Metadata
-    metadata = Column(JSON, default=dict)
+    extra_metadata = Column(JSON, default=dict)
 
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now())

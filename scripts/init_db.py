@@ -75,7 +75,7 @@ def init_database():
                 has_app=UBER.has_app,
                 has_physical_locations=UBER.has_physical_locations,
                 is_tech_company=UBER.is_tech_company,
-                metadata=UBER.metadata,
+                extra_metadata=UBER.metadata,
             )
             db.add(company)
             db.commit()

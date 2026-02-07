@@ -1,9 +1,8 @@
 """Signal database model"""
 
-from sqlalchemy import Column, String, Integer, Float, JSON, DateTime, Index, Enum as SQLEnum
+from sqlalchemy import Column, String, Integer, Float, JSON, DateTime, Index
 from sqlalchemy.sql import func
 from .base import Base
-from ..core.signal import SignalCategory
 
 
 class SignalModel(Base):
@@ -20,7 +19,7 @@ class SignalModel(Base):
     id = Column(String, primary_key=True)  # UUID
     company_id = Column(String, nullable=False, index=True)
     signal_type = Column(String, nullable=False, index=True)
-    category = Column(SQLEnum(SignalCategory), nullable=False)
+    category = Column(String, nullable=False)  # Store as string to avoid circular import
 
     # Temporal
     timestamp = Column(DateTime(timezone=True), nullable=False, index=True)
@@ -33,7 +32,7 @@ class SignalModel(Base):
     confidence = Column(Float, nullable=False)
 
     # Metadata
-    metadata = Column(JSON, nullable=False)
+    signal_metadata = Column(JSON, nullable=False)
     description = Column(String, nullable=True)
     tags = Column(JSON, default=list)
 
