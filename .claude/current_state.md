@@ -1,14 +1,14 @@
 # cousin-eddie - Current State
 
-**Last updated:** 2026-02-07
-**Sessions:** 1
-**Readiness:** 57%
+**Last updated:** 2026-02-08
+**Sessions:** 2
+**Readiness:** 85%
 
 ## Goal
 Build a signal-agnostic alternative data intelligence platform that can analyze ANY public company using 100+ signal types. Uber is the POC to prove methodology.
 
 ## Status
-Designing - Architecture defined, ready to build
+Ready to backtest - Data collection complete, moving to analysis
 
 ## Active Decisions
 1. **Platform over point solution** - Build reusable platform, not just Uber tracker
@@ -29,11 +29,11 @@ None yet
 5. Time-series correlation between signals and price movements will be statistically significant
 
 ## Next Actions
-1. Update readiness.json with new checklist status
-2. Create project structure (signal_types/, core/, api/)
-3. Define SignalProcessor interface
-4. Setup database schema
-5. Build first signal processor (SEC Form 4)
+1. Add Lyft signals for comparison (isolate Uber vs industry trends)
+2. Add SPY/QQQ benchmark indices
+3. Start backtesting - correlate signals with price movements
+4. Identify which signals actually predict moves
+5. Measure signal lag time (when does price react?)
 
 ## Recent Progress
 - Session 1: Project defined - Alternative data intelligence platform
@@ -47,3 +47,12 @@ None yet
 - Session 1: **REAL DATA FLOWING** - 4 signals ingested for Uber from App Store + Job sites
 - Session 1: Query tool working - rich table formatting
 - Session 1: All committed and pushed to GitHub (73acef7)
+- Session 2: **COMPLETE EDGAR COVERAGE** - 10 SEC processors, 258 regulatory signals
+- Session 2: Added Form 144 processor - leading indicator for insider selling (16 signals)
+- Session 2: Ran all 42 processors on Uber - **332 total signals across 45 signal types**
+- Session 2: Built market data infrastructure - stock prices, intraday, options chain
+- Session 2: Ingested **1,696 daily prices** (May 2019-Feb 2026, full IPO history)
+- Session 2: Ingested **980 option contracts** across 17 expirations with greeks/IV
+- Session 2: Options metrics: P/C ratio 0.49 (bullish), 30-day IV 46.6%
+- Session 2: **READY FOR BACKTESTING** - signals + prices + options all in database
+- Session 2: All committed and pushed to GitHub (53f4d51)
