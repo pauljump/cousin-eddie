@@ -5,18 +5,20 @@
 **Readiness:** 85%
 
 ## Goal
-Build a signal-agnostic alternative data intelligence platform that can analyze ANY public company using 100+ signal types. Uber is the POC to prove methodology.
+**NEW STRATEGIC DIRECTION:** cousin-eddie is now the validation infrastructure for /borg (question-driven intelligence engine with closed-loop learning).
+
+Purpose: Backtest 332 signals against 6.7 years of price data to discover which signals actually predict moves. These validated patterns become borg's initial strategy weights for stock prediction domain. Once validated on stocks (fast feedback), patterns transfer to other domains (real estate, jobs, etc.).
 
 ## Status
 Ready to backtest - Data collection complete, moving to analysis
 
 ## Active Decisions
-1. **Platform over point solution** - Build reusable platform, not just Uber tracker
-2. **Plugin architecture** - Each signal type is independent processor with standard interface
-3. **Normalized signal schema** - All signals output to same format (-100 to +100 score)
-4. **Uber as POC** - Prove out methodology on one company first, then scale
-5. **Exhaustive signal coverage** - Target all 100+ signal types from research
-6. **Backtest-first** - Validate signals against historical price data before trading
+1. **cousin-eddie → borg bootstrap** - Use backtesting results to seed borg's strategy weights
+2. **Stock prediction as borg's first domain** - Fast feedback cycles (days vs months), objective outcomes
+3. **Signal validation is critical** - Need ground truth on which signals predict moves before building borg
+4. **Plugin architecture** - Each signal type is independent processor (becomes borg connector)
+5. **Normalized signal schema** - All signals output to same format (-100 to +100 score)
+6. **Backtest-first** - Validate signals against historical price data, patterns transfer to borg
 
 ## Open Blockers
 None yet
@@ -28,12 +30,15 @@ None yet
 4. Single developer + Claude can build and maintain 100+ signal processors
 5. Time-series correlation between signals and price movements will be statistically significant
 
-## Next Actions
-1. Add Lyft signals for comparison (isolate Uber vs industry trends)
-2. Add SPY/QQQ benchmark indices
-3. Start backtesting - correlate signals with price movements
-4. Identify which signals actually predict moves
-5. Measure signal lag time (when does price react?)
+## Next Actions (Backtesting Phase)
+1. Add Lyft + SPY/QQQ for comparison
+2. Build backtesting framework - correlate signals with forward returns
+3. Statistical validation:
+   - Which signals predict moves? (correlation, p-values)
+   - What's the lag time? (signal → price reaction in X days)
+   - What's the edge? (expected return after signal fires)
+4. Extract patterns → These become borg's initial strategy templates
+5. Document validated strategies for borg bootstrap
 
 ## Recent Progress
 - Session 1: Project defined - Alternative data intelligence platform
