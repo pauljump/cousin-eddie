@@ -41,7 +41,7 @@ from loguru import logger
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from src.core.company import Company
+from src.core.company import Company, get_registry
 from src.core.registry import get_processor_registry
 from src.models.signal import SignalModel
 from src.models.company import CompanyModel
@@ -119,7 +119,7 @@ class BackfillManager:
                 # Fetch historical data
                 raw_data = await processor.fetch(company, start_date, end_date)
 
-                if not raw_data or not raw_data.get("company_id"):
+                if not raw_data:
                     logger.warning(f"  No data returned for {signal_type}")
                     continue
 
@@ -166,8 +166,10 @@ class BackfillManager:
 
             for signal in signals:
                 try:
+                    import uuid
                     # Convert Signal dataclass to SQLAlchemy model
                     signal_model = SignalModel(
+                        id=str(uuid.uuid4()),
                         company_id=signal.company_id,
                         signal_type=signal.signal_type,
                         category=signal.category.value,
@@ -177,8 +179,13 @@ class BackfillManager:
                         description=signal.description,
                         raw_value=signal.raw_value,
                         normalized_value=signal.normalized_value,
-                        source_name=signal.metadata.source_name if signal.metadata else None,
-                        source_url=signal.metadata.source_url if signal.metadata else None,
+                        signal_metadata={
+                            "source_name": signal.metadata.source_name if signal.metadata else None,
+                            "source_url": signal.metadata.source_url if signal.metadata else None,
+                            "processing_notes": signal.metadata.processing_notes if signal.metadata else None,
+                            "raw_data_hash": signal.metadata.raw_data_hash if signal.metadata else None,
+                        },
+                        tags=signal.tags if hasattr(signal, 'tags') else [],
                     )
 
                     session.add(signal_model)
@@ -198,20 +205,10 @@ class BackfillManager:
         end_date: Optional[datetime] = None,
     ):
         """
-        Backfill all companies in the system.
+        Backfill all companies in the registry.
         """
-        # For POC, we have one company (Uber)
-        # In production, this would query the database for all companies
-        companies = [
-            Company(
-                id="UBER",
-                name="Uber Technologies Inc.",
-                ticker="UBER",
-                cik="0001543151",
-                has_sec_filings=True,
-                has_app=True,
-            )
-        ]
+        company_registry = get_registry()
+        companies = company_registry.list_all()
 
         total_signals = 0
 
@@ -302,15 +299,19 @@ async def main():
 
     # Run backfill
     if args.company:
-        # Single company
-        company = Company(
-            id=args.company,
-            name=f"{args.company} Inc.",
-            ticker=args.company,
-            cik="0001543151" if args.company == "UBER" else None,
-            has_sec_filings=True,
-            has_app=True,
-        )
+        # Single company - look up from registry first, fall back to minimal object
+        company_registry = get_registry()
+        company = company_registry.get(args.company)
+
+        if not company:
+            logger.warning(f"Company {args.company} not in registry, creating minimal entry")
+            company = Company(
+                id=args.company,
+                name=f"{args.company} Inc.",
+                ticker=args.company,
+                has_sec_filings=True,
+                has_app=True,
+            )
 
         await manager.backfill_company(
             company=company,

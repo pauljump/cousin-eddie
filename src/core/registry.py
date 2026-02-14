@@ -51,6 +51,8 @@ from ..signal_types.alternative.government_permits import GovernmentPermitsProce
 from ..signal_types.alternative.import_export_data import ImportExportProcessor
 from ..signal_types.alternative.foot_traffic import FootTrafficProcessor
 from ..signal_types.alternative.satellite_imagery import SatelliteImageryProcessor
+from ..signal_types.alternative.trademark_filings import TrademarkFilingsProcessor
+from ..signal_types.alternative.subsidiary_registrations import SubsidiaryRegistrationsProcessor
 
 
 def register_all_processors():
@@ -101,6 +103,8 @@ def register_all_processors():
         ImportExportProcessor(),
         FootTrafficProcessor(),
         SatelliteImageryProcessor(),
+        TrademarkFilingsProcessor(),
+        SubsidiaryRegistrationsProcessor(),
     ]
 
     for processor in processors:

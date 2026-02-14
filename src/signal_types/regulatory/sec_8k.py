@@ -34,6 +34,7 @@ from ...core.signal_processor import (
 )
 from ...core.signal import Signal, SignalCategory, SignalMetadata
 from ...core.company import Company
+from .edgar_client import EdgarClient
 
 
 class SEC8KProcessor(SignalProcessor):
@@ -101,6 +102,7 @@ class SEC8KProcessor(SignalProcessor):
         self.user_agent = user_agent
         self.base_url = "https://data.sec.gov"
         self.doc_url = "https://www.sec.gov"
+        self._edgar_client = EdgarClient(user_agent=user_agent)
 
     @property
     def metadata(self) -> SignalProcessorMetadata:
@@ -128,73 +130,41 @@ class SEC8KProcessor(SignalProcessor):
         """
         Fetch 8-K filings from SEC EDGAR.
 
+        Uses EdgarClient to fetch ALL filings (recent + archived batches).
         Returns dict with filings metadata for processing.
         """
         if not company.cik:
             logger.warning(f"No CIK for company {company.id}")
             return {}
 
-        # Format CIK (must be 10 digits, zero-padded)
         cik = company.cik.zfill(10)
-        url = f"{self.base_url}/submissions/CIK{cik}.json"
 
-        headers = {
-            "User-Agent": self.user_agent,
-            "Accept": "application/json",
+        # Fetch all 8-K filings (recent + archived)
+        all_filings = await self._edgar_client.get_all_filings(
+            cik=company.cik, form_type="8-K", start_date=start, end_date=end
+        )
+
+        if not all_filings:
+            return {}
+
+        eightk_filings = []
+        for filing in all_filings:
+            eightk_filings.append({
+                "filing_date": filing["filingDate"],
+                "accession_number": filing["accessionNumber"],
+                "primary_document": filing["primaryDocument"],
+                "cik": cik,
+            })
+
+        logger.info(f"Found {len(eightk_filings)} 8-K filings for {company.ticker}")
+
+        return {
+            "company_id": company.id,
+            "ticker": company.ticker,
+            "cik": cik,
+            "filings": eightk_filings,
+            "timestamp": datetime.utcnow(),
         }
-
-        try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
-                logger.info(f"Fetching 8-K filings for {company.ticker} (CIK: {cik})")
-                response = await client.get(url, headers=headers)
-                response.raise_for_status()
-
-                data = response.json()
-
-                # Extract recent filings
-                filings = data.get("filings", {}).get("recent", {})
-
-                if not filings:
-                    logger.warning(f"No recent filings found for {company.ticker}")
-                    return {}
-
-                # Filter for 8-K filings within date range
-                form_types = filings.get("form", [])
-                filing_dates = filings.get("filingDate", [])
-                accession_numbers = filings.get("accessionNumber", [])
-                primary_documents = filings.get("primaryDocument", [])
-
-                eightk_filings = []
-
-                for i in range(len(form_types)):
-                    if form_types[i] == "8-K":
-                        filing_date = datetime.strptime(filing_dates[i], "%Y-%m-%d")
-
-                        # Filter by date range
-                        if start <= filing_date <= end:
-                            eightk_filings.append({
-                                "filing_date": filing_dates[i],
-                                "accession_number": accession_numbers[i],
-                                "primary_document": primary_documents[i],
-                                "cik": cik,
-                            })
-
-                logger.info(f"Found {len(eightk_filings)} 8-K filings for {company.ticker}")
-
-                return {
-                    "company_id": company.id,
-                    "ticker": company.ticker,
-                    "cik": cik,
-                    "filings": eightk_filings,
-                    "timestamp": datetime.utcnow(),
-                }
-
-        except httpx.HTTPStatusError as e:
-            logger.error(f"HTTP error fetching 8-K data: {e}")
-            return {}
-        except Exception as e:
-            logger.error(f"Error fetching 8-K data: {e}")
-            return {}
 
     def process(self, company: Company, raw_data: Dict[str, Any]) -> List[Signal]:
         """

@@ -29,6 +29,7 @@ from ...core.signal_processor import (
 )
 from ...core.signal import Signal, SignalCategory, SignalMetadata
 from ...core.company import Company
+from .edgar_client import EdgarClient
 
 
 class SECForm144Processor(SignalProcessor):
@@ -50,6 +51,7 @@ class SECForm144Processor(SignalProcessor):
         """
         self.user_agent = user_agent
         self.base_url = "https://data.sec.gov"
+        self._edgar_client = EdgarClient(user_agent=user_agent)
 
     @property
     def metadata(self) -> SignalProcessorMetadata:
@@ -77,6 +79,7 @@ class SECForm144Processor(SignalProcessor):
         """
         Fetch Form 144 filings from SEC EDGAR.
 
+        Uses EdgarClient to fetch ALL filings (recent + archived batches).
         Form 144 doesn't have structured XML like Form 4, so we extract
         metadata from the filing index.
         """
@@ -84,68 +87,26 @@ class SECForm144Processor(SignalProcessor):
             logger.warning(f"No CIK for company {company.id}")
             return []
 
-        # Format CIK (must be 10 digits, zero-padded)
-        cik = company.cik.zfill(10)
+        # Fetch all Form 144 filings (recent + archived)
+        all_filings = await self._edgar_client.get_all_filings(
+            cik=company.cik, form_type="144", start_date=start, end_date=end
+        )
 
-        url = f"{self.base_url}/submissions/CIK{cik}.json"
-
-        headers = {
-            "User-Agent": self.user_agent,
-            "Accept": "application/json",
-        }
-
-        try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
-                logger.info(f"Fetching SEC submissions for {company.ticker} (CIK: {cik})")
-                response = await client.get(url, headers=headers)
-                response.raise_for_status()
-
-                data = response.json()
-
-                # Extract recent filings
-                filings = data.get("filings", {}).get("recent", {})
-
-                if not filings:
-                    logger.warning(f"No filings found for {company.ticker}")
-                    return []
-
-                # Filter for Form 144 within date range
-                form144_filings = []
-                for i in range(len(filings.get("form", []))):
-                    form_type = filings["form"][i]
-                    filing_date_str = filings["filingDate"][i]
-                    filing_date = datetime.strptime(filing_date_str, "%Y-%m-%d")
-
-                    if form_type == "144" and start <= filing_date <= end:
-                        accession_number = filings["accessionNumber"][i]
-                        primary_document = filings["primaryDocument"][i]
-
-                        # Get additional metadata if available
-                        acceptance_datetime = None
-                        if "acceptanceDateTime" in filings and i < len(filings["acceptanceDateTime"]):
-                            acceptance_datetime = filings["acceptanceDateTime"][i]
-
-                        filing_info = {
-                            "accessionNumber": accession_number,
-                            "filingDate": filing_date_str,
-                            "acceptanceDateTime": acceptance_datetime,
-                            "primaryDocument": primary_document,
-                        }
-
-                        # Try to fetch the document for more details
-                        # Form 144 is typically a simple PDF/text file, not XML
-                        # We'll extract what we can from the filing index
-                        form144_filings.append(filing_info)
-
-                logger.info(f"Found {len(form144_filings)} Form 144 filings for {company.ticker}")
-                return form144_filings
-
-        except httpx.HTTPError as e:
-            logger.error(f"HTTP error fetching Form 144 for {company.ticker}: {e}")
+        if not all_filings:
             return []
-        except Exception as e:
-            logger.error(f"Error fetching Form 144 for {company.ticker}: {e}")
-            return []
+
+        form144_filings = []
+        for filing in all_filings:
+            filing_info = {
+                "accessionNumber": filing["accessionNumber"],
+                "filingDate": filing["filingDate"],
+                "acceptanceDateTime": filing.get("acceptanceDateTime"),
+                "primaryDocument": filing["primaryDocument"],
+            }
+            form144_filings.append(filing_info)
+
+        logger.info(f"Found {len(form144_filings)} Form 144 filings for {company.ticker}")
+        return form144_filings
 
     def process(
         self,

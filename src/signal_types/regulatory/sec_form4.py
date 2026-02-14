@@ -27,6 +27,7 @@ from ...core.signal_processor import (
 )
 from ...core.signal import Signal, SignalCategory, SignalMetadata
 from ...core.company import Company
+from .edgar_client import EdgarClient
 
 
 class SECForm4Processor(SignalProcessor):
@@ -42,6 +43,7 @@ class SECForm4Processor(SignalProcessor):
         """
         self.user_agent = user_agent
         self.base_url = "https://data.sec.gov"
+        self._edgar_client = EdgarClient(user_agent=user_agent)
 
     @property
     def metadata(self) -> SignalProcessorMetadata:
@@ -69,77 +71,56 @@ class SECForm4Processor(SignalProcessor):
         """
         Fetch Form 4 filings from SEC EDGAR and parse XML for transaction details.
 
-        SEC API endpoint: https://data.sec.gov/submissions/CIK{cik}.json
-        Returns all filings for a company, which we filter for Form 4.
+        Uses EdgarClient to fetch ALL filings (recent + archived batches).
         """
         if not company.cik:
             logger.warning(f"No CIK for company {company.id}")
             return []
 
-        # Format CIK (must be 10 digits, zero-padded)
         cik = company.cik.zfill(10)
 
-        url = f"{self.base_url}/submissions/CIK{cik}.json"
+        # Fetch all Form 4 filings (recent + archived)
+        all_filings = await self._edgar_client.get_all_filings(
+            cik=company.cik, form_type="4", start_date=start, end_date=end
+        )
 
-        headers = {
-            "User-Agent": self.user_agent,
-            "Accept": "application/json",
-        }
+        if not all_filings:
+            return []
 
+        # Fetch and parse XML for each filing
+        form4_filings = []
         try:
             async with httpx.AsyncClient(timeout=30.0) as client:
-                logger.info(f"Fetching SEC submissions for {company.ticker} (CIK: {cik})")
-                response = await client.get(url, headers=headers)
-                response.raise_for_status()
+                for filing in all_filings:
+                    accession_number = filing["accessionNumber"]
+                    primary_document = filing["primaryDocument"]
 
-                data = response.json()
+                    filing_info = {
+                        "accessionNumber": accession_number,
+                        "filingDate": filing["filingDate"],
+                        "reportDate": filing.get("reportDate"),
+                        "acceptanceDateTime": filing.get("acceptanceDateTime"),
+                        "primaryDocument": primary_document,
+                        "primaryDocDescription": filing.get("primaryDocDescription"),
+                    }
 
-                # Extract recent filings
-                filings = data.get("filings", {}).get("recent", {})
+                    # Fetch and parse the XML document
+                    xml_data = await self._fetch_form4_xml(
+                        client, cik, accession_number, primary_document
+                    )
+                    if xml_data:
+                        filing_info["xml_data"] = xml_data
 
-                if not filings:
-                    logger.warning(f"No filings found for {company.ticker}")
-                    return []
+                    form4_filings.append(filing_info)
 
-                # Filter for Form 4 within date range
-                form4_filings = []
-                for i in range(len(filings.get("form", []))):
-                    form_type = filings["form"][i]
-                    filing_date_str = filings["filingDate"][i]
-                    filing_date = datetime.strptime(filing_date_str, "%Y-%m-%d")
+                    # Rate limit: SEC requests max 10 requests/second
+                    await asyncio.sleep(0.15)
 
-                    if form_type == "4" and start <= filing_date <= end:
-                        accession_number = filings["accessionNumber"][i]
-                        primary_document = filings["primaryDocument"][i]
-
-                        filing_info = {
-                            "accessionNumber": accession_number,
-                            "filingDate": filing_date_str,
-                            "reportDate": filings.get("reportDate", [])[i] if filings.get("reportDate") else None,
-                            "acceptanceDateTime": filings.get("acceptanceDateTime", [])[i] if filings.get("acceptanceDateTime") else None,
-                            "primaryDocument": primary_document,
-                            "primaryDocDescription": filings.get("primaryDocDescription", [])[i] if filings.get("primaryDocDescription") else None,
-                        }
-
-                        # Fetch and parse the XML document
-                        xml_data = await self._fetch_form4_xml(client, cik, accession_number, primary_document)
-                        if xml_data:
-                            filing_info["xml_data"] = xml_data
-
-                        form4_filings.append(filing_info)
-
-                        # Rate limit: SEC requests max 10 requests/second
-                        await asyncio.sleep(0.15)
-
-                logger.info(f"Found {len(form4_filings)} Form 4 filings for {company.ticker}")
-                return form4_filings
-
-        except httpx.HTTPError as e:
-            logger.error(f"HTTP error fetching Form 4 for {company.ticker}: {e}")
-            return []
         except Exception as e:
-            logger.error(f"Error fetching Form 4 for {company.ticker}: {e}")
-            return []
+            logger.error(f"Error fetching Form 4 XMLs for {company.ticker}: {e}")
+
+        logger.info(f"Found {len(form4_filings)} Form 4 filings for {company.ticker}")
+        return form4_filings
 
     async def _fetch_form4_xml(
         self,

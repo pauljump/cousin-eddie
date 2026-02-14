@@ -86,7 +86,7 @@ def get_registry() -> CompanyRegistry:
     return _registry
 
 
-# Pre-register Uber for POC
+# Pre-register companies for analysis
 UBER = Company(
     id="UBER",
     ticker="UBER",
@@ -98,11 +98,64 @@ UBER = Company(
     has_physical_locations=False,
     is_tech_company=True,
     metadata={
-        "competitors": ["DASH"],
+        "competitors": ["LYFT", "DASH"],
         "cities_count": 10000,
         "primary_markets": ["US", "LATAM", "EU"],
         "key_metrics": ["rides", "eats_orders", "drivers", "riders"],
     }
 )
 
+LYFT = Company(
+    id="LYFT",
+    ticker="LYFT",
+    name="Lyft Inc",
+    cik="0001759509",
+    sector="Technology",
+    industry="Ride-hailing",
+    has_app=True,
+    has_physical_locations=False,
+    is_tech_company=True,
+    metadata={
+        "competitors": ["UBER"],
+        "ipo_date": "2019-03-29",
+        "primary_markets": ["US", "CA"],
+    }
+)
+
+DASH = Company(
+    id="DASH",
+    ticker="DASH",
+    name="DoorDash Inc",
+    cik="0001792789",
+    sector="Technology",
+    industry="Food Delivery",
+    has_app=True,
+    has_physical_locations=False,
+    is_tech_company=True,
+    metadata={
+        "competitors": ["UBER"],
+        "ipo_date": "2020-12-09",
+        "primary_markets": ["US", "CA", "AU", "JP"],
+    }
+)
+
+META = Company(
+    id="META",
+    ticker="META",
+    name="Meta Platforms Inc",
+    cik="0001326801",
+    sector="Technology",
+    industry="Social Media / Advertising",
+    has_app=True,
+    has_physical_locations=False,
+    is_tech_company=True,
+    metadata={
+        "competitors": ["GOOGL", "SNAP", "PINS"],
+        "primary_markets": ["Global"],
+    }
+)
+
 _registry.register(UBER)
+_registry.register(LYFT)
+_registry.register(DASH)
+_registry.register(META)
