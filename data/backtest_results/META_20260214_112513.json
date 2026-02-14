@@ -1,0 +1,156 @@
+{
+  "ticker": "META",
+  "date_range": [
+    "2019-05-01",
+    "2026-02-13"
+  ],
+  "total_signals": 1973,
+  "forward_windows": [
+    1,
+    5,
+    20,
+    60
+  ],
+  "signal_results": {
+    "sec_form_144": {
+      "signal_type": "sec_form_144",
+      "category": "regulatory",
+      "n_signals": 402,
+      "window_stats": {
+        "1": {
+          "n": 402,
+          "hit_rate": 0.4801,
+          "avg_return": 0.001545,
+          "median_return": 0.000905,
+          "std_return": 0.021392,
+          "t_stat": 1.448,
+          "p_value": 0.148393,
+          "information_coefficient": 0.0973,
+          "ic_p_value": 0.051314,
+          "sharpe": 0.0722
+        },
+        "5": {
+          "n": 400,
+          "hit_rate": 0.385,
+          "avg_return": 0.010246,
+          "median_return": 0.010275,
+          "std_return": 0.046862,
+          "t_stat": 4.373,
+          "p_value": 1.6e-05,
+          "information_coefficient": 0.0022,
+          "ic_p_value": 0.964593,
+          "sharpe": 0.2186
+        },
+        "20": {
+          "n": 395,
+          "hit_rate": 0.3696,
+          "avg_return": 0.034801,
+          "median_return": 0.035765,
+          "std_return": 0.098396,
+          "t_stat": 7.0293,
+          "p_value": 0.0,
+          "information_coefficient": -0.0152,
+          "ic_p_value": 0.762976,
+          "sharpe": 0.3537
+        },
+        "60": {
+          "n": 377,
+          "hit_rate": 0.3156,
+          "avg_return": 0.098778,
+          "median_return": 0.076408,
+          "std_return": 0.184043,
+          "t_stat": 10.421,
+          "p_value": 0.0,
+          "information_coefficient": 0.0543,
+          "ic_p_value": 0.292964,
+          "sharpe": 0.5367
+        }
+      },
+      "best_window": 60,
+      "is_predictive": true
+    },
+    "sec_form_4": {
+      "signal_type": "sec_form_4",
+      "category": "regulatory",
+      "n_signals": 1571,
+      "window_stats": {
+        "1": {
+          "n": 1571,
+          "hit_rate": 0.3667,
+          "avg_return": 3.9e-05,
+          "median_return": -0.001124,
+          "std_return": 0.02071,
+          "t_stat": 0.0746,
+          "p_value": 0.940561,
+          "information_coefficient": -0.0341,
+          "ic_p_value": 0.17681,
+          "sharpe": 0.0019
+        },
+        "5": {
+          "n": 1570,
+          "hit_rate": 0.4068,
+          "avg_return": 0.007801,
+          "median_return": 0.007836,
+          "std_return": 0.046223,
+          "t_stat": 6.6872,
+          "p_value": 0.0,
+          "information_coefficient": -0.0415,
+          "ic_p_value": 0.099987,
+          "sharpe": 0.1688
+        },
+        "20": {
+          "n": 1566,
+          "hit_rate": 0.4727,
+          "avg_return": 0.023913,
+          "median_return": 0.032597,
+          "std_return": 0.093768,
+          "t_stat": 10.0919,
+          "p_value": 0.0,
+          "information_coefficient": 0.0213,
+          "ic_p_value": 0.399484,
+          "sharpe": 0.255
+        },
+        "60": {
+          "n": 1514,
+          "hit_rate": 0.76,
+          "avg_return": 0.072905,
+          "median_return": 0.06396,
+          "std_return": 0.187745,
+          "t_stat": 15.1096,
+          "p_value": 0.0,
+          "information_coefficient": 0.1233,
+          "ic_p_value": 1e-06,
+          "sharpe": 0.3883
+        }
+      },
+      "best_window": 60,
+      "is_predictive": true
+    }
+  },
+  "baseline_returns": {
+    "1": {
+      "avg": 0.0010649909964337361,
+      "median": 0.0009512333689486217,
+      "std": 0.026656276126729366,
+      "n": 1707
+    },
+    "5": {
+      "avg": 0.005289514383348912,
+      "median": 0.006077991098764341,
+      "std": 0.056903375373799636,
+      "n": 1703
+    },
+    "20": {
+      "avg": 0.021582922504685895,
+      "median": 0.02887678444556143,
+      "std": 0.11159402014636034,
+      "n": 1688
+    },
+    "60": {
+      "avg": 0.06977188972254679,
+      "median": 0.05381098340569776,
+      "std": 0.22370761428681868,
+      "n": 1648
+    }
+  }
+}

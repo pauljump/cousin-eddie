@@ -1,0 +1,156 @@
+{
+  "ticker": "DASH",
+  "date_range": [
+    "2020-12-09",
+    "2026-02-13"
+  ],
+  "total_signals": 1176,
+  "forward_windows": [
+    1,
+    5,
+    20,
+    60
+  ],
+  "signal_results": {
+    "sec_form_144": {
+      "signal_type": "sec_form_144",
+      "category": "regulatory",
+      "n_signals": 165,
+      "window_stats": {
+        "1": {
+          "n": 165,
+          "hit_rate": 0.4606,
+          "avg_return": 0.003038,
+          "median_return": 0.002506,
+          "std_return": 0.026325,
+          "t_stat": 1.4822,
+          "p_value": 0.140206,
+          "information_coefficient": -0.0696,
+          "ic_p_value": 0.374539,
+          "sharpe": 0.1154
+        },
+        "5": {
+          "n": 165,
+          "hit_rate": 0.4242,
+          "avg_return": 0.011181,
+          "median_return": 0.005943,
+          "std_return": 0.054209,
+          "t_stat": 2.6493,
+          "p_value": 0.008854,
+          "information_coefficient": -0.0401,
+          "ic_p_value": 0.608731,
+          "sharpe": 0.2063
+        },
+        "20": {
+          "n": 163,
+          "hit_rate": 0.3374,
+          "avg_return": 0.044663,
+          "median_return": 0.055306,
+          "std_return": 0.100777,
+          "t_stat": 5.6583,
+          "p_value": 0.0,
+          "information_coefficient": -0.0542,
+          "ic_p_value": 0.491877,
+          "sharpe": 0.4432
+        },
+        "60": {
+          "n": 156,
+          "hit_rate": 0.2885,
+          "avg_return": 0.11885,
+          "median_return": 0.136355,
+          "std_return": 0.184045,
+          "t_stat": 8.0656,
+          "p_value": 0.0,
+          "information_coefficient": -0.0476,
+          "ic_p_value": 0.554942,
+          "sharpe": 0.6458
+        }
+      },
+      "best_window": 60,
+      "is_predictive": true
+    },
+    "sec_form_4": {
+      "signal_type": "sec_form_4",
+      "category": "regulatory",
+      "n_signals": 1011,
+      "window_stats": {
+        "1": {
+          "n": 1011,
+          "hit_rate": 0.4918,
+          "avg_return": -0.002484,
+          "median_return": 0.003752,
+          "std_return": 0.04296,
+          "t_stat": -1.8385,
+          "p_value": 0.066287,
+          "information_coefficient": 0.0608,
+          "ic_p_value": 0.053096,
+          "sharpe": -0.0578
+        },
+        "5": {
+          "n": 1010,
+          "hit_rate": 0.4822,
+          "avg_return": 0.003357,
+          "median_return": 0.005306,
+          "std_return": 0.073298,
+          "t_stat": 1.4555,
+          "p_value": 0.145853,
+          "information_coefficient": 0.0666,
+          "ic_p_value": 0.03441,
+          "sharpe": 0.0458
+        },
+        "20": {
+          "n": 983,
+          "hit_rate": 0.4311,
+          "avg_return": 0.034513,
+          "median_return": 0.041973,
+          "std_return": 0.125655,
+          "t_stat": 8.6114,
+          "p_value": 0.0,
+          "information_coefficient": 0.1499,
+          "ic_p_value": 2e-06,
+          "sharpe": 0.2747
+        },
+        "60": {
+          "n": 865,
+          "hit_rate": 0.6992,
+          "avg_return": 0.021184,
+          "median_return": 0.047532,
+          "std_return": 0.220407,
+          "t_stat": 2.8268,
+          "p_value": 0.004811,
+          "information_coefficient": 0.3361,
+          "ic_p_value": 0.0,
+          "sharpe": 0.0961
+        }
+      },
+      "best_window": 20,
+      "is_predictive": true
+    }
+  },
+  "baseline_returns": {
+    "1": {
+      "avg": 0.0005271314328349937,
+      "median": 0.001044539982084462,
+      "std": 0.036226650152251266,
+      "n": 1300
+    },
+    "5": {
+      "avg": 0.0030091935726446937,
+      "median": 0.0024800795585530762,
+      "std": 0.07798402348225379,
+      "n": 1296
+    },
+    "20": {
+      "avg": 0.014313939191573533,
+      "median": 0.024999995655242444,
+      "std": 0.14439030151453017,
+      "n": 1281
+    },
+    "60": {
+      "avg": 0.04070239186831427,
+      "median": 0.08309428339861036,
+      "std": 0.24168774579538851,
+      "n": 1241
+    }
+  }
+}

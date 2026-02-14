@@ -1,0 +1,525 @@
+{
+  "ticker": "UBER",
+  "date_range": [
+    "2019-05-10",
+    "2026-02-13"
+  ],
+  "total_signals": 1222,
+  "forward_windows": [
+    1,
+    5,
+    20,
+    60
+  ],
+  "signal_results": {
+    "app_store_ratings": {
+      "signal_type": "app_store_ratings",
+      "category": "web_digital",
+      "n_signals": 12,
+      "window_stats": {
+        "1": {
+          "n": 12,
+          "hit_rate": 0.0,
+          "avg_return": -0.005547,
+          "median_return": -0.005547,
+          "std_return": 0.0,
+          "t_stat": -Infinity,
+          "p_value": 0.0,
+          "information_coefficient": 0.0,
+          "ic_p_value": 1.0,
+          "sharpe": 0.0
+        }
+      },
+      "best_window": 1,
+      "is_predictive": true
+    },
+    "app_store_ratings_aggregate": {
+      "signal_type": "app_store_ratings_aggregate",
+      "category": "web_digital",
+      "n_signals": 6,
+      "window_stats": {
+        "1": {
+          "n": 6,
+          "hit_rate": 0.0,
+          "avg_return": -0.005547,
+          "median_return": -0.005547,
+          "std_return": 0.0,
+          "t_stat": -Infinity,
+          "p_value": 0.0,
+          "information_coefficient": 0.0,
+          "ic_p_value": 1.0,
+          "sharpe": 0.0
+        }
+      },
+      "best_window": 1,
+      "is_predictive": true
+    },
+    "google_trends": {
+      "signal_type": "google_trends",
+      "category": "web_digital",
+      "n_signals": 15,
+      "window_stats": {
+        "1": {
+          "n": 15,
+          "hit_rate": 0.0,
+          "avg_return": -0.005547,
+          "median_return": -0.005547,
+          "std_return": 0.0,
+          "t_stat": -1.1965153486553962e+16,
+          "p_value": 0.0,
+          "information_coefficient": 0.0,
+          "ic_p_value": 1.0,
+          "sharpe": -3089389345882607.0
+        }
+      },
+      "best_window": 1,
+      "is_predictive": true
+    },
+    "operating_cash_flow": {
+      "signal_type": "operating_cash_flow",
+      "category": "regulatory",
+      "n_signals": 32,
+      "window_stats": {
+        "1": {
+          "n": 32,
+          "hit_rate": 0.5312,
+          "avg_return": -0.016302,
+          "median_return": -0.004137,
+          "std_return": 0.053127,
+          "t_stat": -1.7358,
+          "p_value": 0.092532,
+          "information_coefficient": 0.094,
+          "ic_p_value": 0.608958,
+          "sharpe": -0.3068
+        },
+        "5": {
+          "n": 32,
+          "hit_rate": 0.4062,
+          "avg_return": 0.015614,
+          "median_return": 0.008179,
+          "std_return": 0.054402,
+          "t_stat": 1.6236,
+          "p_value": 0.114594,
+          "information_coefficient": -0.1657,
+          "ic_p_value": 0.364758,
+          "sharpe": 0.287
+        },
+        "20": {
+          "n": 32,
+          "hit_rate": 0.4688,
+          "avg_return": 0.023459,
+          "median_return": 0.025018,
+          "std_return": 0.095752,
+          "t_stat": 1.3859,
+          "p_value": 0.175656,
+          "information_coefficient": 0.0192,
+          "ic_p_value": 0.916781,
+          "sharpe": 0.245
+        },
+        "60": {
+          "n": 32,
+          "hit_rate": 0.7188,
+          "avg_return": 0.033703,
+          "median_return": -0.046036,
+          "std_return": 0.198355,
+          "t_stat": 0.9612,
+          "p_value": 0.343904,
+          "information_coefficient": 0.2094,
+          "ic_p_value": 0.250099,
+          "sharpe": 0.1699
+        }
+      },
+      "best_window": 1,
+      "is_predictive": false
+    },
+    "profit_margin": {
+      "signal_type": "profit_margin",
+      "category": "regulatory",
+      "n_signals": 32,
+      "window_stats": {
+        "1": {
+          "n": 32,
+          "hit_rate": 0.375,
+          "avg_return": -0.016302,
+          "median_return": -0.004137,
+          "std_return": 0.053127,
+          "t_stat": -1.7358,
+          "p_value": 0.092532,
+          "information_coefficient": -0.1326,
+          "ic_p_value": 0.469496,
+          "sharpe": -0.3068
+        },
+        "5": {
+          "n": 32,
+          "hit_rate": 0.375,
+          "avg_return": 0.015614,
+          "median_return": 0.008179,
+          "std_return": 0.054402,
+          "t_stat": 1.6236,
+          "p_value": 0.114594,
+          "information_coefficient": -0.2265,
+          "ic_p_value": 0.212475,
+          "sharpe": 0.287
+        },
+        "20": {
+          "n": 32,
+          "hit_rate": 0.4375,
+          "avg_return": 0.023459,
+          "median_return": 0.025018,
+          "std_return": 0.095752,
+          "t_stat": 1.3859,
+          "p_value": 0.175656,
+          "information_coefficient": -0.0535,
+          "ic_p_value": 0.771395,
+          "sharpe": 0.245
+        },
+        "60": {
+          "n": 32,
+          "hit_rate": 0.625,
+          "avg_return": 0.033703,
+          "median_return": -0.046036,
+          "std_return": 0.198355,
+          "t_stat": 0.9612,
+          "p_value": 0.343904,
+          "information_coefficient": 0.0157,
+          "ic_p_value": 0.932051,
+          "sharpe": 0.1699
+        }
+      },
+      "best_window": 1,
+      "is_predictive": false
+    },
+    "reddit_sentiment": {
+      "signal_type": "reddit_sentiment",
+      "category": "alternative",
+      "n_signals": 5,
+      "window_stats": {
+        "1": {
+          "n": 5,
+          "hit_rate": 0.0,
+          "avg_return": -0.005547,
+          "median_return": -0.005547,
+          "std_return": 0.0,
+          "t_stat": -Infinity,
+          "p_value": 0.0,
+          "information_coefficient": 0.0,
+          "ic_p_value": 1.0,
+          "sharpe": 0.0
+        }
+      },
+      "best_window": 1,
+      "is_predictive": true
+    },
+    "revenue_growth_qoq": {
+      "signal_type": "revenue_growth_qoq",
+      "category": "regulatory",
+      "n_signals": 31,
+      "window_stats": {
+        "1": {
+          "n": 31,
+          "hit_rate": 0.4839,
+          "avg_return": -0.013359,
+          "median_return": -0.002227,
+          "std_return": 0.051286,
+          "t_stat": -1.4503,
+          "p_value": 0.157345,
+          "information_coefficient": 0.3309,
+          "ic_p_value": 0.069015,
+          "sharpe": -0.2605
+        },
+        "5": {
+          "n": 31,
+          "hit_rate": 0.5806,
+          "avg_return": 0.015854,
+          "median_return": 0.008179,
+          "std_return": 0.055284,
+          "t_stat": 1.5967,
+          "p_value": 0.120823,
+          "information_coefficient": 0.3688,
+          "ic_p_value": 0.041219,
+          "sharpe": 0.2868
+        },
+        "20": {
+          "n": 31,
+          "hit_rate": 0.5161,
+          "avg_return": 0.023409,
+          "median_return": 0.025018,
+          "std_return": 0.097335,
+          "t_stat": 1.3391,
+          "p_value": 0.19061,
+          "information_coefficient": 0.1644,
+          "ic_p_value": 0.376816,
+          "sharpe": 0.2405
+        },
+        "60": {
+          "n": 31,
+          "hit_rate": 0.4839,
+          "avg_return": 0.036668,
+          "median_return": -0.041071,
+          "std_return": 0.200912,
+          "t_stat": 1.0162,
+          "p_value": 0.317677,
+          "information_coefficient": 0.1022,
+          "ic_p_value": 0.584422,
+          "sharpe": 0.1825
+        }
+      },
+      "best_window": 5,
+      "is_predictive": false
+    },
+    "sec_8k": {
+      "signal_type": "sec_8k",
+      "category": "regulatory",
+      "n_signals": 8,
+      "window_stats": {
+        "1": {
+          "n": 8,
+          "hit_rate": 0.0,
+          "avg_return": -0.002376,
+          "median_return": -0.003699,
+          "std_return": 0.025423,
+          "t_stat": -0.2644,
+          "p_value": 0.799103,
+          "information_coefficient": -0.4124,
+          "ic_p_value": 0.309959,
+          "sharpe": -0.0935
+        },
+        "5": {
+          "n": 8,
+          "hit_rate": 1.0,
+          "avg_return": 0.008314,
+          "median_return": -0.005504,
+          "std_return": 0.045293,
+          "t_stat": 0.5192,
+          "p_value": 0.619649,
+          "information_coefficient": 0.4124,
+          "ic_p_value": 0.309959,
+          "sharpe": 0.1836
+        },
+        "20": {
+          "n": 7,
+          "hit_rate": 0.0,
+          "avg_return": -0.033784,
+          "median_return": -0.027729,
+          "std_return": 0.06011,
+          "t_stat": -1.487,
+          "p_value": 0.187569,
+          "information_coefficient": 0.0,
+          "ic_p_value": 1.0,
+          "sharpe": -0.562
+        },
+        "60": {
+          "n": 6,
+          "hit_rate": 1.0,
+          "avg_return": -0.003736,
+          "median_return": 0.010264,
+          "std_return": 0.0808,
+          "t_stat": -0.1133,
+          "p_value": 0.914223,
+          "information_coefficient": 0.1309,
+          "ic_p_value": 0.804726,
+          "sharpe": -0.0462
+        }
+      },
+      "best_window": 20,
+      "is_predictive": false
+    },
+    "sec_form_144": {
+      "signal_type": "sec_form_144",
+      "category": "regulatory",
+      "n_signals": 59,
+      "window_stats": {
+        "1": {
+          "n": 59,
+          "hit_rate": 0.5424,
+          "avg_return": 0.001599,
+          "median_return": -0.00227,
+          "std_return": 0.020428,
+          "t_stat": 0.6014,
+          "p_value": 0.549911,
+          "information_coefficient": 0.0279,
+          "ic_p_value": 0.833774,
+          "sharpe": 0.0783
+        },
+        "5": {
+          "n": 59,
+          "hit_rate": 0.4576,
+          "avg_return": 0.007963,
+          "median_return": 0.001884,
+          "std_return": 0.042294,
+          "t_stat": 1.4462,
+          "p_value": 0.153517,
+          "information_coefficient": -0.0551,
+          "ic_p_value": 0.678289,
+          "sharpe": 0.1883
+        },
+        "20": {
+          "n": 57,
+          "hit_rate": 0.4035,
+          "avg_return": 0.022763,
+          "median_return": 0.012949,
+          "std_return": 0.084046,
+          "t_stat": 2.0448,
+          "p_value": 0.045584,
+          "information_coefficient": -0.0675,
+          "ic_p_value": 0.617909,
+          "sharpe": 0.2708
+        },
+        "60": {
+          "n": 57,
+          "hit_rate": 0.3684,
+          "avg_return": 0.059052,
+          "median_return": 0.043396,
+          "std_return": 0.15687,
+          "t_stat": 2.8421,
+          "p_value": 0.006242,
+          "information_coefficient": 0.0096,
+          "ic_p_value": 0.943255,
+          "sharpe": 0.3764
+        }
+      },
+      "best_window": 60,
+      "is_predictive": true
+    },
+    "sec_form_4": {
+      "signal_type": "sec_form_4",
+      "category": "regulatory",
+      "n_signals": 977,
+      "window_stats": {
+        "1": {
+          "n": 977,
+          "hit_rate": 0.8254,
+          "avg_return": 0.002359,
+          "median_return": -0.002483,
+          "std_return": 0.042145,
+          "t_stat": 1.7494,
+          "p_value": 0.080533,
+          "information_coefficient": 0.0761,
+          "ic_p_value": 0.017393,
+          "sharpe": 0.056
+        },
+        "5": {
+          "n": 975,
+          "hit_rate": 0.7143,
+          "avg_return": 0.005768,
+          "median_return": -0.000307,
+          "std_return": 0.086679,
+          "t_stat": 2.078,
+          "p_value": 0.037971,
+          "information_coefficient": 0.0513,
+          "ic_p_value": 0.109656,
+          "sharpe": 0.0665
+        },
+        "20": {
+          "n": 961,
+          "hit_rate": 0.7377,
+          "avg_return": 0.017955,
+          "median_return": -0.006264,
+          "std_return": 0.145484,
+          "t_stat": 3.8259,
+          "p_value": 0.000139,
+          "information_coefficient": 0.124,
+          "ic_p_value": 0.000116,
+          "sharpe": 0.1234
+        },
+        "60": {
+          "n": 925,
+          "hit_rate": 0.7018,
+          "avg_return": 0.046609,
+          "median_return": 0.038525,
+          "std_return": 0.221203,
+          "t_stat": 6.4084,
+          "p_value": 0.0,
+          "information_coefficient": 0.1323,
+          "ic_p_value": 5.4e-05,
+          "sharpe": 0.2107
+        }
+      },
+      "best_window": 60,
+      "is_predictive": true
+    },
+    "sec_risk_factors": {
+      "signal_type": "sec_risk_factors",
+      "category": "regulatory",
+      "n_signals": 4,
+      "window_stats": {
+        "1": {
+          "n": 4,
+          "hit_rate": 0.0,
+          "avg_return": 0.007078,
+          "median_return": 0.004963,
+          "std_return": 0.029698,
+          "t_stat": 0.4767,
+          "p_value": 0.666162,
+          "information_coefficient": 0.0,
+          "ic_p_value": 1.0,
+          "sharpe": 0.2383
+        },
+        "5": {
+          "n": 4,
+          "hit_rate": 0.0,
+          "avg_return": 0.012445,
+          "median_return": 0.003371,
+          "std_return": 0.050962,
+          "t_stat": 0.4884,
+          "p_value": 0.658726,
+          "information_coefficient": 0.0,
+          "ic_p_value": 1.0,
+          "sharpe": 0.2442
+        },
+        "20": {
+          "n": 4,
+          "hit_rate": 0.0,
+          "avg_return": -0.020813,
+          "median_return": -0.014976,
+          "std_return": 0.052424,
+          "t_stat": -0.794,
+          "p_value": 0.485182,
+          "information_coefficient": 0.0,
+          "ic_p_value": 1.0,
+          "sharpe": -0.397
+        },
+        "60": {
+          "n": 4,
+          "hit_rate": 0.0,
+          "avg_return": 0.036853,
+          "median_return": 0.069313,
+          "std_return": 0.12884,
+          "t_stat": 0.5721,
+          "p_value": 0.607326,
+          "information_coefficient": 0.0,
+          "ic_p_value": 1.0,
+          "sharpe": 0.286
+        }
+      },
+      "best_window": 20,
+      "is_predictive": false
+    }
+  },
+  "baseline_returns": {
+    "1": {
+      "avg": 0.0008189341592783736,
+      "median": -0.00027754740907844094,
+      "std": 0.03230094701355356,
+      "n": 1700
+    },
+    "5": {
+      "avg": 0.004384773331057592,
+      "median": 0.0028170435072335156,
+      "std": 0.0742890383631359,
+      "n": 1696
+    },
+    "20": {
+      "avg": 0.0166843736294052,
+      "median": 0.004415854373594405,
+      "std": 0.13570218565511277,
+      "n": 1681
+    },
+    "60": {
+      "avg": 0.046850181915457874,
+      "median": 0.03911009014771309,
+      "std": 0.2197584038143298,
+      "n": 1641
+    }
+  }
+}

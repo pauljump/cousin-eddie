@@ -1,0 +1,156 @@
+{
+  "ticker": "LYFT",
+  "date_range": [
+    "2019-03-29",
+    "2026-02-13"
+  ],
+  "total_signals": 488,
+  "forward_windows": [
+    1,
+    5,
+    20,
+    60
+  ],
+  "signal_results": {
+    "sec_form_144": {
+      "signal_type": "sec_form_144",
+      "category": "regulatory",
+      "n_signals": 45,
+      "window_stats": {
+        "1": {
+          "n": 45,
+          "hit_rate": 0.4222,
+          "avg_return": 0.007906,
+          "median_return": 0.006279,
+          "std_return": 0.031456,
+          "t_stat": 1.686,
+          "p_value": 0.098877,
+          "information_coefficient": 0.09,
+          "ic_p_value": 0.556743,
+          "sharpe": 0.2513
+        },
+        "5": {
+          "n": 45,
+          "hit_rate": 0.5111,
+          "avg_return": 0.005672,
+          "median_return": -0.004184,
+          "std_return": 0.079595,
+          "t_stat": 0.4781,
+          "p_value": 0.634971,
+          "information_coefficient": -0.1558,
+          "ic_p_value": 0.306894,
+          "sharpe": 0.0713
+        },
+        "20": {
+          "n": 45,
+          "hit_rate": 0.6,
+          "avg_return": 0.015719,
+          "median_return": -0.019623,
+          "std_return": 0.178431,
+          "t_stat": 0.5909,
+          "p_value": 0.557578,
+          "information_coefficient": -0.1145,
+          "ic_p_value": 0.454012,
+          "sharpe": 0.0881
+        },
+        "60": {
+          "n": 42,
+          "hit_rate": 0.4048,
+          "avg_return": 0.098958,
+          "median_return": 0.065007,
+          "std_return": 0.275621,
+          "t_stat": 2.3268,
+          "p_value": 0.024994,
+          "information_coefficient": -0.1005,
+          "ic_p_value": 0.526622,
+          "sharpe": 0.359
+        }
+      },
+      "best_window": 60,
+      "is_predictive": true
+    },
+    "sec_form_4": {
+      "signal_type": "sec_form_4",
+      "category": "regulatory",
+      "n_signals": 443,
+      "window_stats": {
+        "1": {
+          "n": 443,
+          "hit_rate": 0.575,
+          "avg_return": -0.00172,
+          "median_return": -0.002451,
+          "std_return": 0.032168,
+          "t_stat": -1.1251,
+          "p_value": 0.261151,
+          "information_coefficient": 0.0465,
+          "ic_p_value": 0.328913,
+          "sharpe": -0.0535
+        },
+        "5": {
+          "n": 443,
+          "hit_rate": 0.725,
+          "avg_return": -0.006974,
+          "median_return": -0.00409,
+          "std_return": 0.076793,
+          "t_stat": -1.9114,
+          "p_value": 0.056605,
+          "information_coefficient": 0.1452,
+          "ic_p_value": 0.002184,
+          "sharpe": -0.0908
+        },
+        "20": {
+          "n": 439,
+          "hit_rate": 0.625,
+          "avg_return": 0.000179,
+          "median_return": -0.019802,
+          "std_return": 0.185032,
+          "t_stat": 0.0202,
+          "p_value": 0.983867,
+          "information_coefficient": 0.0551,
+          "ic_p_value": 0.249317,
+          "sharpe": 0.001
+        },
+        "60": {
+          "n": 425,
+          "hit_rate": 0.3824,
+          "avg_return": 0.001531,
+          "median_return": -0.048576,
+          "std_return": 0.270896,
+          "t_stat": 0.1165,
+          "p_value": 0.907313,
+          "information_coefficient": -0.1023,
+          "ic_p_value": 0.035028,
+          "sharpe": 0.0057
+        }
+      },
+      "best_window": 5,
+      "is_predictive": false
+    }
+  },
+  "baseline_returns": {
+    "1": {
+      "avg": -7.149694986784563e-05,
+      "median": -0.001669451916947297,
+      "std": 0.04355912267720808,
+      "n": 1729
+    },
+    "5": {
+      "avg": 0.0004472931568684968,
+      "median": -0.00495868602351689,
+      "std": 0.10070088989385938,
+      "n": 1725
+    },
+    "20": {
+      "avg": 0.0024407623920577473,
+      "median": -0.023259444962951136,
+      "std": 0.19076068456029052,
+      "n": 1710
+    },
+    "60": {
+      "avg": 0.003319800710772901,
+      "median": -0.04636197318540829,
+      "std": 0.2961932297676678,
+      "n": 1670
+    }
+  }
+}
